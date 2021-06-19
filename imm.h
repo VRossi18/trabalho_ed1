@@ -7,5 +7,6 @@
 
 int openImage(char *arq);
 TMat2D *txt_to_mat(char *arqTXT);
+TMat2D *imm_to_mat(char *arqIMM);
 
 #endif

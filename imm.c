@@ -59,3 +59,28 @@ TMat2D *txt_to_mat(char *arqTXT){
     fclose(arq);
     return mat;
 }
+
+TMat2D *imm_to_mat(char *arqIMM){
+    int row, col, data;
+    TMat2D *mat;
+
+    FILE *arq;
+    arq = fopen(arqIMM, "rb");
+    if(arq == NULL){
+        return NULL;
+    }
+    fread(&row, sizeof(int), 1, arq);
+    fread(&col, sizeof(int), 1, arq);
+    mat = mat2D_create(row, col);
+
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            fread(&data, sizeof(int), 1, arq);
+            if((escreveMatriz(mat, i, j, data)) != SUCCESS){
+                return NULL;
+            }
+        }
+    }
+    fclose(arq);
+    return mat;
+}
