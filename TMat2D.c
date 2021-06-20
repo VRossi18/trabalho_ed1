@@ -23,13 +23,17 @@ int getLinha(TMat2D *mat){
 TMat2D *mat2D_create(int nrow, int ncol){
     TMat2D *mat;
 
-    mat = malloc(sizeof(TMat2D));
+    if(nrow <= 0 || ncol <= 0){
+        return NULL;
+    }
+
+    mat = (TMat2D *)malloc(sizeof(TMat2D));
     if(mat == NULL){
         return NULL;
     }
     mat->nrows = nrow;
     mat->ncolums = ncol;
-    mat->data = malloc(ncol*nrow*sizeof(int));
+    mat->data = (int *)malloc(ncol*nrow*sizeof(int));
     if(mat->data == NULL){
         free(mat);
         return NULL;
@@ -205,20 +209,18 @@ int * somaColunasMatriz(TMat2D *mat){
 }
 
 int printaMatriz(TMat2D *mat){
+    int i, j;
     if (mat == NULL){
         return -1;
     }
     else {
-        printf("\n");
-        for(int i=0;i<mat->nrows;i++){
-            printf("\n");
-            for(int j=0;j<mat->ncolums;j++){
-                printf("%3d ", mat->data[j * mat->nrows + i]);
-            }
-        }
-        printf("\n\n");
+        for(i = 0; i < mat->nrows; i++){
+		    for(j = 0; j < mat->ncolums; j++){
+			printf("%3d\t ", mat->data[j * mat->nrows + i]);
+		    }
+		printf("\n");
+	    }
     }
-    
     return 0;
 }
 
