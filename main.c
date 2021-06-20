@@ -14,6 +14,11 @@ int main(int argc, char *argv[]) {
     
 
     else if (strcmp(argv[1], "-convert") == 0) {
+        if((convert_txt_imm(argv[2], argv[3])) == SUCCESS){
+            printf("Convertido com sucesso!");
+        }else{
+            printf("Erro. Arquivo não convertido!");
+        }
         
     }
     
@@ -35,3 +40,5 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
+
+
