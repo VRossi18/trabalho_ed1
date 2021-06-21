@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     else if (strcmp(argv[1], "-segment") == 0)
     {
-        if (segment_imm(argv[2], argv[3], argv[4]) == SUCCESS){
+        if (segment_imm(atoi(argv[2]), argv[3], argv[4]) == SUCCESS){
             printf("Arquivo segmentado com sucesso!");
         }else
             printf("Erro no segmento!");
