@@ -165,7 +165,7 @@ int segment_imm(int seg, char *imm, char *saida){
     }
     int lin, cols, x;
 
-    TMat2D *imm = imm_to_mat(imm);
+    TMat2D *mat = imm_to_mat(imm);
     if(imm == NULL)
         return INVALID_NULL_POINTER;
 
@@ -173,15 +173,15 @@ int segment_imm(int seg, char *imm, char *saida){
 	if(arqseg ==NULL){
 		return -1;
     }
-    lin = getLinha(imm);
-    cols = getCol(imm);
+    lin = getLinha(mat);
+    cols = getCol(mat);
 
     fwrite(&cols, sizeof(int), 1, arqseg);
     fwrite(&lin, sizeof(int), 1, arqseg);
 
     for(int i=0; i<lin; i++){
         for(int j=0; j<cols; j++){
-            acessaMatriz(imm, i, j, &x);
+            acessaMatriz(mat, i, j, &x);
             if(x>=seg){
                x=1;                    
             }else{
@@ -191,7 +191,7 @@ int segment_imm(int seg, char *imm, char *saida){
         }
     }
 
-    free(imm);
+    free(mat);
     fclose(arqseg);
 
     return SUCCESS;
