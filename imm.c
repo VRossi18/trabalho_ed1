@@ -159,68 +159,40 @@ int convert_txt_imm(char *arqTXT, char *arqIMM)
     return SUCCESS;
 }
 
-int comp_conexo(char *arquivoimm, char *arquivoSaida)
-{
-    Img *im = lerImage(arquivoimm);
-    int lin, col;
-    int dadosim;
-    int dadosrot;
-    if (mat2D_get_lincol(im->data, &lin, &col) != SUCCESS)
-    {
-        return INVALID_FILE;
+int segment_imm(int seg, char *imm, char *saida){
+    if(seg<0 || seg>255){
+        return -1;
     }
-    Img *im_rot = (Img *)malloc(sizeof(Img));
-    if (im_rot == NULL)
-    {
-        return INVALID_FILE;
+    int lin, cols, x;
+
+    TMat2D *imm = imm_to_mat(imm);
+    if(imm == NULL)
+        return INVALID_NULL_POINTER;
+
+    FILE *arqseg = fopen(saida, "wb");
+	if(arqseg ==NULL){
+		return -1;
     }
-    im_rot->data = mat2D_create(lin, col);
+    lin = getLinha(imm);
+    cols = getCol(imm);
 
-    int label = 1;
-    Stack *lista_proximos = create_stack();
-    struct Ponto p, p_atual, a;
-    for (int i = 0; i < lin; i++)
-    {
-        for (int j = 0; j < col; j++)
-        {
-            p.x = i;
-            p.y = j;
-            mat2D_get_value(im->data, p.x, p.y, &dadosim);
-            mat2D_get_value(im_rot->data, p.x, p.y, &dadosrot);
-            if ((dadosim == 1) && (dadosrot == 0))
-            {
-                mat2D_set_value(im_rot->data, p.x, p.y, label);
-                stack_push(lista_proximos, p);
-                while (stack_size(lista_proximos) != 0)
-                {
+    fwrite(&cols, sizeof(int), 1, arqseg);
+    fwrite(&lin, sizeof(int), 1, arqseg);
 
-                    stack_find(lista_proximos, &p_atual);
-                    stack_pop(lista_proximos);
-
-                    for (int d = 0; d < 4; d++)
-                    {
-                        a.x = p.x;
-                        a.y = p.y;
-                        p.x = p_atual.x - (d == 0) + (d == 1);
-                        p.y = p_atual.y - (d == 2) + (d == 3);
-
-                        mat2D_get_value(im->data, p.x, p.y, &dadosim);
-                        mat2D_get_value(im_rot->data, p.x, p.y, &dadosrot);
-
-                        if ((dadosim == 1) && (dadosrot == 0))
-                        {
-                            mat2D_set_value(im_rot->data, p.x, p.y, label);
-                            stack_push(lista_proximos, p);
-                        }
-                        p.x = a.x;
-                        p.y = a.y;
-                    }
-                }
-                label++;
+    for(int i=0; i<lin; i++){
+        for(int j=0; j<cols; j++){
+            acessaMatriz(imm, i, j, &x);
+            if(x>=seg){
+               x=1;                    
+            }else{
+                x=0;
             }
+           fwrite(&x,sizeof(int), 1, arqseg);             
         }
     }
-    imagemParaArquivo(im_rot, arquivoSaida);
-    stack_free(lista_proximos);
+
+    free(imm);
+    fclose(arqseg);
+
     return SUCCESS;
 }
