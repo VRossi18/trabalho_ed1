@@ -37,7 +37,11 @@ int main(int argc, char *argv[])
 
     else if (strcmp(argv[1], "-cc") == 0)
     {
-        comp_conexo(argv[2], argv[3]);
+        if(compConexo(argv[2], argv[3]) == SUCCESS){
+            printf("Componentes conexos foram encontrados!");
+        }else{
+            printf("Componentes conexos não foram registrados!");
+        }
     }
 
     else if (strcmp(argv[1], "-lab") == 0)

@@ -2,12 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "TMat2D.h"
-#include "stack.h"
-
-typedef struct Img
-{
-    TMat2D *data;
-} Img;
+#include "TStack.h"
 
 int openImage(char *arq)
 {
@@ -194,5 +189,79 @@ int segment_imm(int seg, char *imm, char *saida){
     free(mat);
     fclose(arqseg);
 
+    return SUCCESS;
+}
+
+int compConexo(char *arqIMM, char *arqFINAL){
+    int dadosArq;
+    int grupo = 1;
+    int lin, col;
+    int dataEntrada;
+    int dataSaida;
+
+    TMat2D *imm = imm_to_mat(arqIMM);
+    if(imm == NULL){
+        return INVALID_NULL_POINTER;
+    }
+    lin = getLinha(imm);
+    col = getCol(imm);
+
+    TMat2D *res = mat2D_create(lin, col);
+
+    TStack *agrup = create_stack();
+    preencheMatriz(res);
+
+    Ponto ponto; 
+    Ponto recebe;
+    Ponto aux;
+
+    for(int i = 0; i < lin; i++){
+        for(int j = 0; i < col; i++){
+            ponto.x = i;
+            ponto.y = j;
+
+            acessaMatriz(imm, ponto.x, ponto.y, &dataEntrada);
+            acessaMatriz(res, ponto.x, ponto.y, &dataSaida);
+
+            if((dataEntrada == 1) && (dataSaida == 0)){
+                escreveMatriz(res, ponto.x, ponto.y, grupo);
+                stack_push(agrup, ponto);
+                while(stack_size(agrup) != 0){
+                    stack_top(agrup, &recebe);
+                    stack_pop(agrup);
+                    for(int next = 0; next < 4; next++){
+                        aux.x = ponto.x;
+                        aux.y = ponto.y;
+                        ponto.x = recebe.x - (next == 0) + (next == 1);
+                        ponto.y = recebe.y - (next == 2) + (next == 3);
+                        acessaMatriz(imm, ponto.x, ponto.y, &dataEntrada);
+                        acessaMatriz(res, ponto.x, ponto.y, &dataSaida);
+
+                        if((dataEntrada == 1) && (dataSaida == 0)){
+                            escreveMatriz(res, ponto.x, ponto.y, grupo);
+                            stack_push(agrup, ponto);
+                            
+                        }
+                        ponto.x = aux.x;
+                        ponto.y = aux.y;
+                    }
+                }
+            grupo++;
+            printf("MILAGROSAMENTE CHEGOU AQUI");
+            }
+            
+            
+        }
+    }
+    FILE *arq = fopen(arqFINAL, "wb");
+    fwrite(&lin, sizeof(int), 1, arq);
+    fwrite(&col, sizeof(int), 1, arq);
+    for(int i = 0; i < lin; i++){
+        for(int j = 0; j < col; j++){
+            acessaMatriz(res, i, j, &dadosArq);
+            fwrite(&dadosArq, sizeof(int), 1, arq);
+        }
+    }
+    stack_free(agrup);
     return SUCCESS;
 }

@@ -10,6 +10,6 @@ int openImage(char *arq);
 TMat2D *txt_to_mat(char *arqTXT);
 TMat2D *imm_to_mat(char *arqIMM);
 int convert_txt_imm(char *arqTXT, char *arqIMM);
-int comp_conexo(char *arquivoimm, char *arquivoSaida);
+int compConexo(char *arqIMM, char *arqFINAL);
 int segment_imm(int seg, char *imm, char *saida);
 #endif

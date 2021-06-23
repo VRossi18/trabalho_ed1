@@ -1,10 +1,8 @@
-
-#ifndef alunoh
-#define alunoh
+#include <stdio.h>
 
 struct Ponto{
     int x;
     int y;
 };
 
-#endif
+typedef struct Ponto Ponto;

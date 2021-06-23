@@ -84,7 +84,7 @@ int preencheMatriz(TMat2D *mat){
     }else{
         for(int i = 0; i < mat->nrows; i++){
             for(int j = 0; j < mat->ncolums; j++){
-                mat->data[j * mat->nrows + i] = (int)(rand() % 10);
+                mat->data[j * mat->nrows + i] = 0;
             }
         }
         return 0;
