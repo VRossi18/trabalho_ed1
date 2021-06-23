@@ -137,8 +137,8 @@ int convert_txt_imm(char *arqTXT, char *arqIMM)
     row = getLinha(mat);
     col = getCol(mat);
 
-    fwrite(&col, sizeof(int), 1, arq);
     fwrite(&row, sizeof(int), 1, arq);
+    fwrite(&col, sizeof(int), 1, arq);
 
     for (int i = 0; i < row; i++)
     {
