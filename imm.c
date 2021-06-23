@@ -155,8 +155,8 @@ int convert_txt_imm(char *arqTXT, char *arqIMM)
 }
 
 int segment_imm(int seg, char *imm, char *saida){
-    if(seg<0 || seg>255){
-        return -1;
+    if(seg < 0 || seg > 255){
+        return OUT_OF_RANGE;
     }
     int lin, cols, x;
 
@@ -166,7 +166,7 @@ int segment_imm(int seg, char *imm, char *saida){
 
     FILE *arqseg = fopen(saida, "wb");
 	if(arqseg ==NULL){
-		return -1;
+		return INVALID_NULL_POINTER;
     }
     lin = getLinha(mat);
     cols = getCol(mat);
@@ -239,7 +239,6 @@ int compConexo(char *arqIMM, char *arqFINAL){
                 escreveMatriz(res, ponto.x, ponto.y, grupo);
                 stack_push(agrup, ponto);
                 while(stack_empty(agrup) != 1){
-                    printf("MILAGROSAMENTE CHEGOU AQUI");
                     stack_top(agrup, &recebe);
                     stack_pop(agrup);
                     for(int next = 0; next < 4; next++){

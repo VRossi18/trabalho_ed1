@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
     else
     {
-        system("clear");
+        system("cls");
         printf("Comando inexistente");
     }
     return 0;

@@ -4,7 +4,6 @@
 #include "TMat2D.h"
 #define SUCCESS 0
 #define INVALID_NULL_POINTER -1
-#define INVALID_FILE -2
 
 int openImage(char *arq);
 TMat2D *txt_to_mat(char *arqTXT);
