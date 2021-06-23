@@ -116,3 +116,10 @@ int stack_top(TStack *st, struct Ponto *al)
     }
     return SUCCESS;
 }
+
+int stack_empty(TStack *st){
+	if(st==NULL)
+		return INVALID_NULL_POINTER;
+	else
+		return (st->size==0);
+}

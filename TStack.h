@@ -13,3 +13,4 @@ int stack_push(TStack *st, struct Ponto al);
 int stack_pop(TStack *st);
 int stack_size(TStack *st);
 int stack_top(TStack *st, struct Ponto *al);
+int stack_empty(TStack *st);

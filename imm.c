@@ -226,29 +226,31 @@ int compConexo(char *arqIMM, char *arqFINAL){
     Ponto ponto; 
     Ponto recebe;
     Ponto aux;
-
-    for(int i = 0; i < lin; i++){
-        for(int j = 0; i < col; i++){
+    
+    for(int i = 1; i < lin; i++){
+        for(int j = 1; i < col; i++){
             ponto.x = i;
             ponto.y = j;
-
+            
             acessaMatriz(imm, ponto.x, ponto.y, &dataEntrada);
             acessaMatriz(res, ponto.x, ponto.y, &dataSaida);
 
             if((dataEntrada == 1) && (dataSaida == 0)){
                 escreveMatriz(res, ponto.x, ponto.y, grupo);
                 stack_push(agrup, ponto);
-                while(stack_size(agrup) != 0){
+                while(stack_empty(agrup) != 1){
+                    printf("MILAGROSAMENTE CHEGOU AQUI");
                     stack_top(agrup, &recebe);
                     stack_pop(agrup);
                     for(int next = 0; next < 4; next++){
+                        
                         aux.x = ponto.x;
                         aux.y = ponto.y;
                         ponto.x = recebe.x - (next == 0) + (next == 1);
                         ponto.y = recebe.y - (next == 2) + (next == 3);
                         acessaMatriz(imm, ponto.x, ponto.y, &dataEntrada);
                         acessaMatriz(res, ponto.x, ponto.y, &dataSaida);
-
+                        
                         if((dataEntrada == 1) && (dataSaida == 0)){
                             escreveMatriz(res, ponto.x, ponto.y, grupo);
                             stack_push(agrup, ponto);
@@ -257,9 +259,10 @@ int compConexo(char *arqIMM, char *arqFINAL){
                         ponto.x = aux.x;
                         ponto.y = aux.y;
                     }
+                    
+                    
                 }
-            grupo++;
-            printf("MILAGROSAMENTE CHEGOU AQUI");
+                grupo++;
             }
             
             
