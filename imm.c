@@ -171,18 +171,30 @@ int segment_imm(int seg, char *imm, char *saida){
     lin = getLinha(mat);
     cols = getCol(mat);
 
-    fwrite(&cols, sizeof(int), 1, arqseg);
-    fwrite(&lin, sizeof(int), 1, arqseg);
-
+    TMat2D *out = mat2D_create(lin, cols);
+    
     for(int i=0; i<lin; i++){
         for(int j=0; j<cols; j++){
             acessaMatriz(mat, i, j, &x);
-            if(x>=seg){
-               x=1;                    
+            if(x >= seg){
+                x = 1;
             }else{
-                x=0;
+                x = 0;
             }
-           fwrite(&x,sizeof(int), 1, arqseg);             
+            escreveMatriz(out, i, j, x);            
+        }
+    }
+
+    lin = getLinha(out);
+    cols = getCol(out);
+
+    fwrite(&lin, sizeof(int), 1, arqseg);
+    fwrite(&cols, sizeof(int), 1, arqseg);
+
+    for(int i=0; i<lin; i++){
+        for(int j=0; j<cols; j++){
+            acessaMatriz(out, i, j, &x);
+            fwrite(&x,sizeof(int), 1, arqseg);             
         }
     }
 
